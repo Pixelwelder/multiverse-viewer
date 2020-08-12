@@ -1,0 +1,14 @@
+.app {
+  width: 90vw;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 50px;
+}
+
+.app-container {
+  display: flex;
+
+  & > *:first-child {
+    flex: 0 1 700px;
+  }
+}
