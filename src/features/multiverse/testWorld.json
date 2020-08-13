@@ -31,6 +31,13 @@
       }
     },
     {
+      "type": "room",
+      "overrides": {
+        "displayName": "Regroup",
+        "description": "Hey, we made it to stability!"
+      }
+    },
+    {
       "type": "item",
       "overrides": {
         "displayName": "Floating Hulk",
@@ -40,7 +47,9 @@
   ],
   "graph": [
     { "from": "the-space-age", "to": "slow-start" },
-    { "from": "the-space-age", "to": "fast-start" }
+    { "from": "the-space-age", "to": "fast-start" },
+    { "from": "fast-start", "to": "regroup" },
+    { "from": "slow-start", "to": "regroup" }
   ],
   "setup": {
     "floating-hulk": "fast-start",

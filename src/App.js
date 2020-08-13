@@ -12,8 +12,8 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(startupActions.init());
-  }, []);
+    dispatch(startupActions.startup());
+  }, [dispatch]);
 
   return (
     <div className="app">

@@ -7,11 +7,10 @@ const initialState = {
   isLoading: false
 };
 
-const init = createAsyncThunk(
-  'init',
+const startup = createAsyncThunk(
+  'startup',
   async (_, { dispatch }) => {
     try {
-      console.log('go');
       dispatch(logActions.log(createLog('Starting up...')));
       await dispatch(multiverseActions.init());
       dispatch(logActions.log(createLog('Startup complete')));
@@ -26,20 +25,21 @@ const { reducer } = createSlice({
   name: 'startup',
   initialState,
   extraReducers: {
-    [init.pending]: (state) => {
+    [startup.pending]: (state) => {
       state.isInitialized = false;
       state.isLoading = true;
     },
-    [init.rejected]: (state) => {
+    [startup.rejected]: (state, action) => {
       state.isLoading = false;
+      console.log(action.error);
     },
-    [init.fulfilled]: (state) => {
+    [startup.fulfilled]: (state) => {
       state.isLoading = false;
     }
   }
 });
 
-const actions = { init };
+const actions = { startup };
 
 export { actions };
 export default reducer;

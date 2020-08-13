@@ -1,14 +1,17 @@
-import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import multiverseReducer from '../features/multiverse/multiverseSlice';
 import logReducer from '../features/log/logSlice';
 import startupReducer from './startupSlice';
+import uiReducer from '../features/multiverse/uiSlice';
 
 export default configureStore({
   reducer: {
     startup: startupReducer,
-    counter: counterReducer,
     multiverse: multiverseReducer,
-    log: logReducer
+    log: logReducer,
+    ui: uiReducer
   },
+  middleware: getDefaultMiddleware({
+    serializableCheck: false,
+  })
 });
