@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
-import { parse, createWorld } from '@pixelwelders/multiverse';
+import { parse, createWorld } from '../../multiverse';
 
 import { actions as logActions, createLog } from "../log/logSlice";
 import worldJSON from './testWorld.json';

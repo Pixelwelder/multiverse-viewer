@@ -13,7 +13,7 @@ const Graph = () => {
   return (
     <div className="graph">
       <h3>Graph</h3>
-      {graph.nodes.length && (
+      {!!graph.nodes.length && (
         <ReactGraph
           graph={graph}
           options={{

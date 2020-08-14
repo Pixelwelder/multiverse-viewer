@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 
 import './app.scss';
-import Log from "./features/log/Log";
-import { selectors as logSelectors } from "./features/log/logSlice";
-import { actions as startupActions } from "./app/startupSlice";
-import { useDispatch, useSelector } from "react-redux";
-import Multiverse from "./features/multiverse/Multiverse";
+
+import Log from "../features/log/Log";
+import { selectors as logSelectors } from "../features/log/logSlice";
+import { actions as startupActions } from "./startupSlice";
+import Multiverse from "../features/multiverse/Multiverse";
 
 function App() {
   const { messages } = useSelector(logSelectors.select);

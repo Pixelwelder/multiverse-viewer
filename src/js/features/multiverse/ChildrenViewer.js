@@ -1,7 +1,6 @@
 import React from 'react';
 
 const ChildrenViewer = ({ object, title = 'Children' }) => {
-  console.log('OBJECT', object);
   return (
     <div className="inventory-viewer">
       <h3>{title}</h3>

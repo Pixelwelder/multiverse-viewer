@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "name": "Test World"
+  },
+  "objects": [
+    {
+      "type": "character",
+      "overrides": {
+        "displayName": "Player"
+      }
+    },
+    {
+      "type": "room",
+      "overrides": {
+        "displayName": "The Space Age",
+        "description": "It’s been a tough century. First you had the plagues, then you had the riots, then you had that one guy \nwho swore he could summon the spirits of our ancestors—and we all know how that turned out. \nBut now, two billion deaths later, we have peace. Good job, [player]! Those of us who survived knew you could do it!"
+      }
+    },
+    {
+      "type": "room",
+      "overrides": {
+        "displayName": "Slow Start",
+        "description": "Wow, what a century! Not such a great start, but hey. We got somewhere."
+      }
+    },
+    {
+      "type": "room",
+      "overrides": {
+        "displayName": "Fast Start",
+        "description": "Hey, not bad!"
+      }
+    },
+    {
+      "type": "room",
+      "overrides": {
+        "displayName": "Regroup",
+        "description": "Hey, we made it to stability!"
+      }
+    },
+    {
+      "type": "item",
+      "overrides": {
+        "displayName": "Floating Hulk",
+        "description": "Judging by the radiation damage, this has been out here for millions of years. Crazy that the AC still works."
+      }
+    }
+  ],
+  "graph": [
+    { "from": "the-space-age", "to": "slow-start" },
+    { "from": "the-space-age", "to": "fast-start" },
+    { "from": "fast-start", "to": "regroup" },
+    { "from": "slow-start", "to": "regroup" }
+  ],
+  "setup": {
+    "floating-hulk": "fast-start",
+    "player": "the-space-age"
+  },
+  "aliases": {
+    "the-space-age": ["start"],
+    "floating-hulk": ["ship"]
+  }
+}

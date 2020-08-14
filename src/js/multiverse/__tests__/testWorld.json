@@ -6,7 +6,7 @@
     {
       "type": "character",
       "overrides": {
-        "displayName": "Roge the Splendid"
+        "displayName": "Player"
       }
     },
     {
@@ -31,13 +31,6 @@
       }
     },
     {
-      "type": "room",
-      "overrides": {
-        "displayName": "Regroup",
-        "description": "Hey, we made it to stability!"
-      }
-    },
-    {
       "type": "item",
       "overrides": {
         "displayName": "Floating Hulk",
@@ -47,16 +40,13 @@
   ],
   "graph": [
     { "from": "the-space-age", "to": "slow-start" },
-    { "from": "the-space-age", "to": "fast-start" },
-    { "from": "fast-start", "to": "regroup" },
-    { "from": "slow-start", "to": "regroup" }
+    { "from": "the-space-age", "to": "fast-start" }
   ],
   "setup": {
     "floating-hulk": "fast-start",
     "player": "start"
   },
   "aliases": {
-    "roge-the-splendid": ["player"],
     "the-space-age": ["start"],
     "floating-hulk": ["ship"]
   }
