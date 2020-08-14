@@ -88,9 +88,9 @@ const createWorld = (meta) => {
     console.log(`${object} moved from ${fromRoom} to ${toRoom}.`)
   };
 
-  const reparent = (itemName, fromParentName, toParentName) => {
+  const reparent = (itemName, toParentName) => {
     const item = getObject(itemName);
-    const fromParent = getObject(fromParentName);
+    const fromParent = getParent(itemName);
     const toParent = getObject(toParentName);
 
     if (!fromParent.children[item]) throw new Error(`${item} is not in ${fromParent}.`);

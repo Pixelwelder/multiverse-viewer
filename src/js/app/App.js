@@ -18,7 +18,7 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Multiverse</h1>
+      <h1>Multiverse Prime</h1>
       <div className="app-container">
         <Multiverse />
         <Log messages={messages} />

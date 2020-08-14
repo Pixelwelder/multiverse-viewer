@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './style.scss';
+
 import Graph from "./Graph";
 import ChildrenViewer from "./ChildrenViewer";
 import { selectors as uiSelectors } from "./uiSlice";
@@ -14,11 +16,16 @@ const Multiverse = () => {
 
   return (
     <div className="page multiverse">
-      <h2>Multiverse</h2>
+      <h2>Viewer</h2>
       <Graph />
       <div>
         <ChildrenViewer title="Inventory" object={player} />
-        <ChildrenViewer object={selectedNode} />
+        <ChildrenViewer
+          object={selectedNode}
+          onAction={name => {
+            dispatch(multiverseActions.reparent({ objectName: name, toParentName: 'player' }));
+          }}
+        />
         <ObjectViewer
           object={selectedNode}
           onAction={() => {

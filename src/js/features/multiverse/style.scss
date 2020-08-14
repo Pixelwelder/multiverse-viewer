@@ -1,0 +1,11 @@
+.inventory-viewer {
+  li {
+    display: flex;
+    align-items: center;
+
+    p {
+      margin-right: 12px;
+      margin-bottom: 0;
+    }
+  }
+}

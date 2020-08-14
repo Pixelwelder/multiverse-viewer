@@ -43,6 +43,13 @@
         "displayName": "Floating Hulk",
         "description": "Judging by the radiation damage, this has been out here for millions of years. Crazy that the AC still works."
       }
+    },
+    {
+      "type": "item",
+      "overrides": {
+        "displayName": "Cloak of Office",
+        "description": "This is how you tell someone's in charge: by their cloak."
+      }
     }
   ],
   "graph": [
@@ -53,7 +60,8 @@
   ],
   "setup": {
     "floating-hulk": "fast-start",
-    "player": "the-space-age"
+    "player": "the-space-age",
+    "cloak-of-office": "the-space-age"
   },
   "aliases": {
     "the-space-age": ["start"],

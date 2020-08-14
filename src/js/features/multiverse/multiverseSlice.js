@@ -32,6 +32,15 @@ const move = createAsyncThunk(
   }
 );
 
+const reparent = createAsyncThunk(
+  'reparent',
+  async ({ objectName, toParentName }, { getState }) => {
+    const state = getState();
+    const { world } = select(state);
+    world.reparent(objectName, toParentName);
+  }
+);
+
 const { reducer } = createSlice({
   name: 'multiverse',
   initialState,
@@ -47,7 +56,6 @@ const { reducer } = createSlice({
 
 const getNodes = (world) => {
   const nodes = world.getNodes();
-  const currentNode = world.getParent('player');
   const convertedNodes = Object.entries(nodes).map(([name, node]) => ({
     id: name,
     label: node.displayName,
@@ -83,10 +91,10 @@ const selectPlayerRoom = createSelector(
 );
 
 const selectors = {
-  selectAsGraph, selectPlayer
+  selectAsGraph, selectPlayer, selectPlayerRoom
 };
 
-const actions = { init, move };
+const actions = { init, move, reparent };
 
 export { actions, selectors };
 export default reducer;
