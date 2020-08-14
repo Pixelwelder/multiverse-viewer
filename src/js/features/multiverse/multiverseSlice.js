@@ -3,6 +3,7 @@ import { parse, createWorld } from '../../multiverse';
 
 import { actions as logActions, createLog } from "../log/logSlice";
 import worldJSON from './testWorld.json';
+import { ERROR } from "../log/logTypes";
 
 const initialState = {
   world: createWorld()
@@ -14,6 +15,20 @@ const init = createAsyncThunk(
     dispatch(logActions.log(createLog('Creating world...')));
     const world = parse(worldJSON);
     return world;
+  }
+);
+
+const move = createAsyncThunk(
+  'move',
+  async ({ objectName, toRoomName }, { dispatch, getState }) => {
+    try {
+      const state = getState();
+      const { world } = select(state);
+      world.move(objectName, toRoomName);
+    } catch (error) {
+      dispatch(logActions.log(createLog(error, ERROR)));
+      throw error;
+    }
   }
 );
 
@@ -32,6 +47,7 @@ const { reducer } = createSlice({
 
 const getNodes = (world) => {
   const nodes = world.getNodes();
+  const currentNode = world.getParent('player');
   const convertedNodes = Object.entries(nodes).map(([name, node]) => ({
     id: name,
     label: node.displayName,
@@ -42,28 +58,35 @@ const getNodes = (world) => {
 };
 
 const select = ({ multiverse }) => multiverse;
+const selectAsGraph = createSelector(
+  select,
+  ({ world }) => {
+    return {
+      nodes: getNodes(world),
+      nodesMap: world.getNodes(),
+      edges: world.getEdges()
+    };
+  }
+);
+const selectPlayer = createSelector(
+  select,
+  ({ world }) => {
+    const player = world.hasObject('player') ? world.getObject('player') : null;
+    return player;
+  }
+);
+const selectPlayerRoom = createSelector(
+  select, selectPlayer,
+  ({ world }, player) => {
+    return world.getParent(player);
+  }
+);
+
 const selectors = {
-  selectAsGraph: createSelector(
-    select,
-    ({ world }) => {
-      return {
-        nodes: getNodes(world),
-        nodesMap: world.getNodes(),
-        edges: world.getEdges()
-      };
-    }
-  ),
-  selectPlayer: createSelector(
-    select,
-    ({ world }) => {
-      const player = world.hasObject('player') ? world.getObject('player') : null;
-      console.log('player', typeof player);
-      return player;
-    }
-  )
+  selectAsGraph, selectPlayer
 };
 
-const actions = { init };
+const actions = { init, move };
 
 export { actions, selectors };
 export default reducer;

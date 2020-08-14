@@ -20,7 +20,10 @@ const Graph = () => {
             edges: {
               color: '#000000'
             },
-            height: '500px'
+            height: '500px',
+            nodes: {
+
+            }
           }}
           events={{
             select: (event) => {

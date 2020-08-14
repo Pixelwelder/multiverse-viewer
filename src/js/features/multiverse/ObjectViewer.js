@@ -1,6 +1,8 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
+import { ROOM } from '../../multiverse/constants';
 
-const ObjectViewer = ({ object }) => {
+const ObjectViewer = ({ object, onAction }) => {
   return (
     <div className="object-viewer">
       <h3>Object Viewer</h3>
@@ -8,6 +10,14 @@ const ObjectViewer = ({ object }) => {
         <>
           <p>{object.displayName}</p>
           <p>{object.description}</p>
+
+          {object._type === ROOM && (
+            <Button
+              onClick={onAction}
+            >
+              Go Here
+            </Button>
+          )}
         </>
       )}
     </div>
