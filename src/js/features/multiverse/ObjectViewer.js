@@ -7,11 +7,9 @@ import { ROOM } from '../../multiverse/constants';
 const ObjectViewer = ({ object, onAction }) => {
   return (
     <div className="object-viewer">
-      <h3>Object Viewer</h3>
       {object && (
         <>
-          <p>{object.displayName}</p>
-          <ReactMarkdown source={object.description} />
+          <ReactMarkdown source={object.description || ''} />
           {/*<p>{object.description}</p>*/}
 
           {onAction && (object._type === ROOM) && (

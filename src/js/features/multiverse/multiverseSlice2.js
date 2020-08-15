@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import { actions as logActions, createLog } from "../log/logSlice";
 import { ERROR } from "../log/logTypes";
-import { CHARACTER, ROOM } from "./objectTypes";
+import { ROOM } from "./objectTypes";
 import { createObject } from "./createObject";
 
-const json = require('./testWorld.json');
+const json = require('./testWorld2.json');
 
 const initialState = {
   meta: {

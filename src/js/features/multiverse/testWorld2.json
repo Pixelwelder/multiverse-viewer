@@ -1,0 +1,65 @@
+{
+  "meta": {
+    "name": "Test World",
+    "start": "start"
+  },
+  "objects": [
+    {
+      "type": "character",
+      "overrides": {
+        "displayName": "Player"
+      }
+    },
+    {
+      "type": "room",
+      "overrides": {
+        "displayName": "Start",
+        "description": "An android tramps through a forest in the rain, walking stick in hand. He senses every crack of lightning full milliseconds before it happens, and shields his delicate sensors appropriately. He whistles occasionally, which is a habit he's picked up in this lifetime.\n\n_You've been doing that a lot lately_, says a thought in the back of his mind. It could be his own subconscious talking. It could also be the small intelligence that lives in his head. The longer this lifetime lasts, the harder it is to tell the difference.\n\n_I enjoy it_, says Roche. He thinks the thought loudly, if such a thing is possible, as he often does when he is trying to figure out who is talking to him.\n\n_I'm sure the wildlife is enjoying it as well_, says the return thought. _I can’t wait be ripped apart by something._\n\n_Hello, Phil_, says Roche.\n\n_Screw you_, says Phil."
+      }
+    },
+    {
+      "type": "room",
+      "overrides": {
+        "displayName": "Slow Start",
+        "description": "Wow, what a century! Not such a great start, but hey. We got somewhere."
+      }
+    },
+    {
+      "type": "room",
+      "overrides": {
+        "displayName": "Fast Start",
+        "description": "Hey, not bad!"
+      }
+    },
+    {
+      "type": "room",
+      "overrides": {
+        "displayName": "Regroup",
+        "description": "Hey, we made it to stability!"
+      }
+    },
+    {
+      "type": "item",
+      "overrides": {
+        "displayName": "Floating Hulk",
+        "description": "Judging by the radiation damage, this has been out here for millions of years. Crazy that the AC still works."
+      }
+    },
+    {
+      "type": "item",
+      "overrides": {
+        "displayName": "Cloak of Office",
+        "description": "This is how you tell someone's in charge: by their cloak."
+      }
+    }
+  ],
+  "graph": {
+    "start": ["slow-start", "fast-start"],
+    "slow-start": ["regroup"],
+    "fast-start": ["regroup"]
+  },
+  "hierarchy": {
+    "start": ["cloak-of-office", "player"],
+    "fast-start": ["floating-hulk"]
+  }
+}
