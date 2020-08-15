@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import { actions as logActions, createLog } from "../log/logSlice";
 import { ERROR } from "../log/logTypes";
-import { ROOM } from "./objectTypes";
+import { CHARACTER, ROOM } from "./objectTypes";
 import { createObject } from "./createObject";
 
 const json = require('./testWorld.json');
@@ -52,6 +52,20 @@ const init = createAsyncThunk(
   }
 );
 
+/**
+ * Works its way up through the hierarchy until it finds a room.
+ * @param objectName - the item to start with.
+ */
+const findRoom = (objectName, invertedHierarchy) => {
+  let current = objectName;
+  while (true) {
+    if (!invertedHierarchy[current]) break;
+    current = invertedHierarchy[current];
+  }
+
+  return current;
+}
+
 const reparent = createAsyncThunk(
   'reparent',
   async ({ object: _object, newParentName }, { dispatch, getState }) => {
@@ -69,6 +83,11 @@ const reparent = createAsyncThunk(
         if (!(graph[oldParent] && graph[oldParent].includes(newParent.toString()))) {
           throw new Error(`${newParent} is inaccessible from ${oldParent}.`);
         }
+      } else {
+        // Objects must share a room to move.
+        const oldRoom = findRoom(oldParentName, invertedHierarchy);
+        const newRoom = findRoom(newParentName, invertedHierarchy);
+        if (oldRoom !== newRoom) throw new Error('Cannot pick up an object in another location.');
       }
 
       const oldParentChildren = hierarchy[oldParentName] || [];

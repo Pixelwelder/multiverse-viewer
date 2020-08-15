@@ -13,7 +13,7 @@ const ChildrenViewer = ({ objects, title = 'Children', onAction }) => {
             <li key={index}>
               <p>{object.displayName}</p>
               {
-                object._type !== CHARACTER && (
+                onAction && (object._type !== CHARACTER) && (
                   <Button
                     size="sm"
                     onClick={() => onAction(object)}
