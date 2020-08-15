@@ -9,9 +9,6 @@ const ObjectViewer = ({ object, onAction }) => {
     <div className="object-viewer">
       {object && (
         <>
-          <ReactMarkdown source={object.description || ''} />
-          {/*<p>{object.description}</p>*/}
-
           {onAction && (object._type === ROOM) && (
             <Button
               onClick={() => onAction(object)}

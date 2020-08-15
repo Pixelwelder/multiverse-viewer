@@ -13,7 +13,7 @@ const Multiverse = () => {
   return (
     <div className="page multiverse">
       <h2>{ meta.name }</h2>
-      <Tabs defaultActiveKey="story" id="multiverse-main">
+      <Tabs defaultActiveKey="story" id="multiverse-main" mountOnEnter>
         <Tab eventKey="story" title="Story">
           <Story />
         </Tab>

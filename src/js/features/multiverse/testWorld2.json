@@ -54,9 +54,9 @@
     }
   ],
   "graph": {
-    "start": ["slow-start", "fast-start"],
-    "slow-start": ["regroup"],
-    "fast-start": ["regroup"]
+    "start": [{ "to": "slow-start" }, { "to": "fast-start" }],
+    "slow-start": [{ "to": "regroup" }],
+    "fast-start": [{ "to": "regroup" }]
   },
   "hierarchy": {
     "start": ["cloak-of-office", "player"],

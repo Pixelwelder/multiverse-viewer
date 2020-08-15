@@ -84,7 +84,7 @@ const reparent = createAsyncThunk(
       const newParent = objects[newParentName];
       if (oldParent._type === ROOM && newParent._type === ROOM) {
         dispatch(logActions.log(createLog('Attempting to move between rooms.')));
-        if (!(graph[oldParent] && graph[oldParent].includes(newParent.toString()))) {
+        if (!(graph[oldParent] && graph[oldParent].find(({ to }) => to === newParent.toString()))) {
           throw new Error(`${newParent} is inaccessible from ${oldParent}.`);
         }
       } else {
@@ -158,7 +158,7 @@ const selectEdges = createSelector(select, ({ graph }) => {
   const edges = [];
   Object.entries(graph).forEach(([start, ends]) => {
     ends.forEach(end => {
-      edges.push({ from: start, to: end, id: `${start}->${end}` });
+      edges.push({ from: start, to: end.to, id: `${start}->${end.to}`, name: end.name });
     });
   });
   return edges;
