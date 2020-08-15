@@ -56,12 +56,16 @@ const init = createAsyncThunk(
  * Works its way up through the hierarchy until it finds a room.
  * @param objectName - the item to start with.
  */
-const findRoom = (objectName, invertedHierarchy) => {
+const getRoom = (objectName, invertedHierarchy, objects) => {
   let current = objectName;
   while (true) {
     if (!invertedHierarchy[current]) break;
     current = invertedHierarchy[current];
   }
+
+  const object = objects[current];
+  if (!object) return undefined;
+  if (!object._type === ROOM) return undefined;
 
   return current;
 }
@@ -85,8 +89,8 @@ const reparent = createAsyncThunk(
         }
       } else {
         // Objects must share a room to move.
-        const oldRoom = findRoom(oldParentName, invertedHierarchy);
-        const newRoom = findRoom(newParentName, invertedHierarchy);
+        const oldRoom = getRoom(oldParentName, invertedHierarchy, objects);
+        const newRoom = getRoom(newParentName, invertedHierarchy, objects);
         if (oldRoom !== newRoom) throw new Error('Cannot pick up an object in another location.');
       }
 
@@ -140,6 +144,16 @@ const selectNodes = createSelector(select, ({ objects }) => {
       id: object._name, label: object.displayName, title: object.displayName, object
     }));
 });
+// const selectFilteredNodes = createSelector(
+//   select, selectNodes,
+//   ({ objects, graph, invertedHierarchy }, nodes) => {
+//     const playerRoom = getRoom('player', invertedHierarchy, objects);
+//     if (!playerRoom) return nodes;
+//
+//     const accessibleRooms = graph[playerRoom].reduce((accum, name) => ({ ...accum, [name]: true }), {});
+//     return nodes.filter((node) => accessibleRooms[node.id]);
+//   }
+// );
 const selectEdges = createSelector(select, ({ graph }) => {
   const edges = [];
   Object.entries(graph).forEach(([start, ends]) => {
@@ -153,6 +167,10 @@ const selectAsGraph = createSelector(
   selectNodes, selectEdges,
   (nodes, edges) => ({ nodes, edges })
 );
+// const selectAsFilteredGraph = createSelector(
+//   selectFilteredNodes, selectEdges,
+//   (nodes, edges) => ({ nodes, edges })
+// );
 const selectPlayer = createSelector(select, ({ objects }) => objects['player']);
 const selectPlayerChildren = createSelector(
   select,

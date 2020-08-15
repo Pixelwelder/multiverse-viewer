@@ -3,7 +3,6 @@ import { Button } from "react-bootstrap";
 import { CHARACTER } from "./objectTypes";
 
 const ChildrenViewer = ({ objects, title = 'Children', onAction }) => {
-  console.log(objects);
   return (
     <div className="inventory-viewer">
       <h3>{title}</h3>
