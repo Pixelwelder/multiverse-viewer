@@ -58,7 +58,9 @@ const actions = { ...slice.actions, init };
 const select = ({ multiverse }) => multiverse;
 const selectMeta = createSelector(select, ({ meta }) => meta);
 const selectNodes = createSelector(select, ({ objects }) => {
-  return Object.values(objects).filter(({ _type }) => _type === ROOM)
+  return Object.values(objects)
+    .filter(({ _type }) => _type === ROOM)
+    .map(({ _name, displayName }) => ({ id: _name, label: displayName, title: displayName }));
 });
 const selectEdges = createSelector(select, ({ graph }) => {
   const edges = [];
