@@ -57,29 +57,29 @@ const reparent = createAsyncThunk(
   async ({ object: _object, newParentName }, { dispatch, getState }) => {
     try {
       const state = getState();
-      const { hierarchy, invertedHierarchy } = select(state);
+      const { objects, graph, hierarchy, invertedHierarchy } = select(state);
       const object = _object || selectPlayer(state);
       const oldParentName = invertedHierarchy[object];
+
+      // Certain moves have rules.
+      const oldParent = objects[oldParentName];
+      const newParent = objects[newParentName];
+      if (oldParent._type === ROOM && newParent._type === ROOM) {
+        dispatch(logActions.log(createLog('Attempting to move between rooms.')));
+        if (!(graph[oldParent] && graph[oldParent].includes(newParent.toString()))) {
+          throw new Error(`${newParent} is inaccessible from ${oldParent}.`);
+        }
+      }
+
       const oldParentChildren = hierarchy[oldParentName] || [];
       const newParentChildren = hierarchy[newParentName] || [];
 
+      dispatch(logActions.log(createLog(`Moved ${object} from ${oldParent} to ${newParent}.`)));
       return {
         object, oldParentName, newParentName,
         oldParentChildren: oldParentChildren.filter(name => name !== object.toString()),
         newParentChildren: [...newParentChildren, object.toString()]
       };
-
-    } catch (error) {
-      dispatch(logActions.log(createLog(error, ERROR)));
-      throw error;
-    }
-  }
-);
-
-const move = createAsyncThunk(
-  'move',
-  async (_, { dispatch }) => {
-    try {
 
     } catch (error) {
       dispatch(logActions.log(createLog(error, ERROR)));
@@ -106,14 +106,11 @@ const slice = createSlice({
       state.hierarchy[oldParentName] = oldParentChildren;
       state.hierarchy[newParentName] = newParentChildren
       state.invertedHierarchy[object] = newParentName;
-    },
-    [move.fulfilled]: (state, action) => {
-
     }
   }
 });
 
-const actions = { ...slice.actions, init, reparent, move };
+const actions = { ...slice.actions, init, reparent };
 
 const select = ({ multiverse }) => multiverse;
 const selectMeta = createSelector(select, ({ meta }) => meta);
