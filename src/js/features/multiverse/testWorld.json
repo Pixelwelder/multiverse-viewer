@@ -1,6 +1,7 @@
 {
   "meta": {
-    "name": "Test World"
+    "name": "Test World",
+    "start": "the-space-age"
   },
   "objects": [
     {

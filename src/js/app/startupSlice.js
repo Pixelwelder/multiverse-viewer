@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { actions as logActions, createLog } from "../features/log/logSlice";
 import { actions as multiverseActions } from "../features/multiverse/multiverseSlice2";
+import { actions as uiActions } from '../features/multiverse/uiSlice';
 
 const initialState = {
   isInitialized: false,
@@ -13,6 +14,7 @@ const startup = createAsyncThunk(
     try {
       dispatch(logActions.log(createLog('Starting up...')));
       await dispatch(multiverseActions.init());
+      await dispatch(uiActions.initUI());
       dispatch(logActions.log(createLog('Startup complete')));
     } catch (error) {
       dispatch(logActions.log(createLog(error.message)));

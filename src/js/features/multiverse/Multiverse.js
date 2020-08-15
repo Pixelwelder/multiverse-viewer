@@ -4,7 +4,6 @@ import './style.scss';
 
 import Graph from "./Graph";
 import ChildrenViewer from "./ChildrenViewer";
-import { selectors as uiSelectors } from "./uiSlice";
 import { selectors as multiverseSelectors, actions as multiverseActions } from "./multiverseSlice2";
 import { selectors } from "./selectors";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,8 +15,10 @@ const Multiverse = () => {
   const inventory = useSelector(multiverseSelectors.selectPlayerChildren);
   const selectedObject = useSelector(selectors.selectSelectedObject);
   const selectedObjectChildren = useSelector(selectors.selectSelectedObjectChildren);
+  const playerRoom = useSelector(multiverseSelectors.selectPlayerRoom);
   const dispatch = useDispatch();
 
+  console.log(selectedObject, playerRoom);
   return (
     <div className="page multiverse">
       <h2>{ meta.name }</h2>
@@ -32,9 +33,10 @@ const Multiverse = () => {
         />
         <ObjectViewer
           object={selectedObject}
-          onAction={object => {
-            dispatch(multiverseActions.reparent({ newParentName: object.toString() }));
-          }}
+          onAction={selectedObject !== playerRoom
+            ? object => dispatch(multiverseActions.reparent({ newParentName: object.toString() }))
+            : null
+          }
         />
       </div>
     </div>

@@ -11,7 +11,7 @@ const ObjectViewer = ({ object, onAction }) => {
           <p>{object.displayName}</p>
           <p>{object.description}</p>
 
-          {object._type === ROOM && (
+          {onAction && (object._type === ROOM) && (
             <Button
               onClick={() => onAction(object)}
             >

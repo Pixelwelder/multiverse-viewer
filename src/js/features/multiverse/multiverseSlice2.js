@@ -18,7 +18,7 @@ const initialState = {
 };
 
 const init = createAsyncThunk(
-  'init',
+  'initMultiverse',
   async (_, { dispatch }) => {
     try {
       dispatch(logActions.log(createLog('Parsing world from JSON...')));
@@ -67,7 +67,7 @@ const getRoom = (objectName, invertedHierarchy, objects) => {
   if (!object) return undefined;
   if (!object._type === ROOM) return undefined;
 
-  return current;
+  return object;
 }
 
 const reparent = createAsyncThunk(
@@ -179,12 +179,19 @@ const selectPlayerChildren = createSelector(
     return names.map(name => objects[name]);
   }
 );
+const selectPlayerRoom = createSelector(
+  select,
+  ({ invertedHierarchy, objects }) => {
+    return getRoom('player', invertedHierarchy, objects);
+  }
+);
 const selectors = {
   select,
   selectMeta,
   selectAsGraph,
   selectPlayer,
-  selectPlayerChildren
+  selectPlayerChildren,
+  selectPlayerRoom
 };
 
 export { actions, selectors };
