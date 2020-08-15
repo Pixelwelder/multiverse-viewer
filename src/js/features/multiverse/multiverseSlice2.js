@@ -24,9 +24,13 @@ const init = createAsyncThunk(
       let { meta, objects, graph, setup } = json;
 
       dispatch(logActions.log(createLog(`Creating ${objects.length} objects...`)));
-      objects = objects.map(({ type, overrides }) => {
-        return createObject(type, overrides);
-      });
+      objects = objects.reduce((accum, { type, overrides }) => {
+        const object = createObject(type, overrides);
+        return {
+          ...accum,
+          [object._name]: object
+        };
+      }, {});
       dispatch(logActions.log(createLog(`Created objects.`)));
 
       dispatch(logActions.log(createLog('Successfully parsed world.')));
@@ -60,7 +64,9 @@ const selectMeta = createSelector(select, ({ meta }) => meta);
 const selectNodes = createSelector(select, ({ objects }) => {
   return Object.values(objects)
     .filter(({ _type }) => _type === ROOM)
-    .map(({ _name, displayName }) => ({ id: _name, label: displayName, title: displayName }));
+    .map(object => ({
+      id: object._name, label: object.displayName, title: object.displayName, object
+    }));
 });
 const selectEdges = createSelector(select, ({ graph }) => {
   const edges = [];
@@ -77,6 +83,7 @@ const selectAsGraph = createSelector(
 );
 const selectPlayer = createSelector(select, () => null);
 const selectors = {
+  select,
   selectMeta,
   selectAsGraph,
   selectPlayer
