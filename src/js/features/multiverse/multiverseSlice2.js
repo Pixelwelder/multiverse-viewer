@@ -13,7 +13,8 @@ const initialState = {
   },
   objects: {},
   graph: {}, // arrays of destination names keyed by the name of their starts
-  hierarchy: {}
+  hierarchy: {},
+  invertedHierarchy: {}
 };
 
 const init = createAsyncThunk(
@@ -33,8 +34,40 @@ const init = createAsyncThunk(
       }, {});
       dispatch(logActions.log(createLog(`Created objects.`)));
 
+      dispatch(logActions.log(createLog('Parsing hierarchy...')));
+      const invertedHierarchy = {};
+      Object.entries(hierarchy).forEach(([parent, children]) => {
+        children.forEach(child => {
+          invertedHierarchy[child] = parent;
+        });
+      });
+      dispatch(logActions.log(createLog('Hierarchy complete.')));
+
       dispatch(logActions.log(createLog('Successfully parsed world.')));
-      return { meta, objects, graph, hierarchy };
+      return { meta, objects, graph, hierarchy, invertedHierarchy };
+    } catch (error) {
+      dispatch(logActions.log(createLog(error, ERROR)));
+      throw error;
+    }
+  }
+);
+
+const reparent = createAsyncThunk(
+  'reparent',
+  async ({ object, newParentName }, { dispatch, getState }) => {
+    try {
+      const { hierarchy, invertedHierarchy } = select(getState());
+      const oldParentName = invertedHierarchy[object];
+      const oldParentChildren = hierarchy[oldParentName] || [];
+      const newParentChildren = hierarchy[newParentName] || [];
+      const oldParentFilteredChildren = oldParentChildren.filter(name => name !== object.toString());
+
+      return {
+        object, oldParentName, newParentName,
+        oldParentChildren: oldParentChildren.filter(name => name !== object.toString()),
+        newParentChildren: [...newParentChildren, object.toString()]
+      };
+
     } catch (error) {
       dispatch(logActions.log(createLog(error, ERROR)));
       throw error;
@@ -48,16 +81,24 @@ const slice = createSlice({
   reducers: {},
   extraReducers: {
     [init.fulfilled]: (state, action) => {
-      const { meta, objects, graph, hierarchy } = action.payload;
+      const { meta, objects, graph, hierarchy, invertedHierarchy } = action.payload;
       state.meta = meta;
       state.objects = objects;
       state.graph = graph;
       state.hierarchy = hierarchy;
+      state.invertedHierarchy = invertedHierarchy;
+    },
+    [reparent.fulfilled]: (state, action) => {
+      const { object, oldParentName, newParentName, oldParentChildren, newParentChildren } = action.payload;
+
+      state.hierarchy[oldParentName] = oldParentChildren;
+      state.hierarchy[newParentName] = newParentChildren
+      state.invertedHierarchy[object] = newParentName;
     }
   }
 });
 
-const actions = { ...slice.actions, init };
+const actions = { ...slice.actions, init, reparent };
 
 const select = ({ multiverse }) => multiverse;
 const selectMeta = createSelector(select, ({ meta }) => meta);
@@ -81,12 +122,20 @@ const selectAsGraph = createSelector(
   selectNodes, selectEdges,
   (nodes, edges) => ({ nodes, edges })
 );
-const selectPlayer = createSelector(select, () => null);
+const selectPlayer = createSelector(select, ({ objects }) => objects['player']);
+const selectPlayerChildren = createSelector(
+  select,
+  ({ objects, hierarchy }) => {
+    const names = hierarchy['player'] || [];
+    return names.map(name => objects[name]);
+  }
+);
 const selectors = {
   select,
   selectMeta,
   selectAsGraph,
-  selectPlayer
+  selectPlayer,
+  selectPlayerChildren
 };
 
 export { actions, selectors };

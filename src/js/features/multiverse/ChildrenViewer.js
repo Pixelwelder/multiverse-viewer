@@ -8,15 +8,15 @@ const ChildrenViewer = ({ objects, title = 'Children', onAction }) => {
     <div className="inventory-viewer">
       <h3>{title}</h3>
       <ul>
-        {objects.map((item, index) => {
+        {objects.map((object, index) => {
           return (
             <li key={index}>
-              <p>{item.displayName}</p>
+              <p>{object.displayName}</p>
               {
-                item._type !== CHARACTER && (
+                object._type !== CHARACTER && (
                   <Button
                     size="sm"
-                    onClick={() => onAction('name')}
+                    onClick={() => onAction(object)}
                   >
                     Take
                   </Button>

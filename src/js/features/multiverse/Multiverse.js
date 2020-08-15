@@ -13,8 +13,7 @@ import ObjectViewer from "./ObjectViewer";
 const Multiverse = () => {
   const { selectedNode } = useSelector(uiSelectors.select);
   const meta = useSelector(multiverseSelectors.selectMeta);
-  const player = useSelector(multiverseSelectors.selectPlayer);
-  const selectedObject = useSelector(selectors.selectSelectedObject);
+  const inventory = useSelector(multiverseSelectors.selectPlayerChildren);
   const selectedObjectChildren = useSelector(selectors.selectSelectedObjectChildren);
   const dispatch = useDispatch();
 
@@ -23,11 +22,11 @@ const Multiverse = () => {
       <h2>{ meta.name }</h2>
       <Graph />
       <div>
-        <ChildrenViewer title="Inventory" objects={[]} />
+        <ChildrenViewer title="Inventory" objects={inventory} />
         <ChildrenViewer
           objects={selectedObjectChildren}
-          onAction={name => {
-            dispatch(multiverseActions.reparent({ objectName: name, toParentName: 'player' }));
+          onAction={object => {
+            dispatch(multiverseActions.reparent({ object, newParentName: 'player' }));
           }}
         />
         <ObjectViewer

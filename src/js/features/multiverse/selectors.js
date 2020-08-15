@@ -17,7 +17,7 @@ const selectSelectedObjectChildren = createSelector(
     const names = hierarchy[selectedNode] || [];
     return names.map(name => objects[name]);
   }
-)
+);
 
 const selectors = { selectSelectedObject, selectSelectedObjectChildren };
 export { selectors };
