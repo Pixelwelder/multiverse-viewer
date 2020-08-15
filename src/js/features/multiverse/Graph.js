@@ -8,7 +8,8 @@ import { actions as uiActions } from "./uiSlice";
 const Graph = () => {
   const dispatch = useDispatch();
   const graph = useSelector(multiverseSelectors.selectAsGraph);
-  const { nodesMap } = graph;
+  console.log('GRAPH', graph);
+  // const { nodesMap } = graph;
 
   return (
     <div className="graph">
@@ -27,9 +28,9 @@ const Graph = () => {
           }}
           events={{
             select: (event) => {
-              const [nodeName] = event.nodes;
-              const { [nodeName]: node } = nodesMap;
-              dispatch(uiActions.setSelectedNode(node));
+              // const [nodeName] = event.nodes;
+              // const { [nodeName]: node } = nodesMap;
+              // dispatch(uiActions.setSelectedNode(node));
             }
           }}
         />

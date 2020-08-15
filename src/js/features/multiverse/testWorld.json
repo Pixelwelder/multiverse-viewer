@@ -52,12 +52,11 @@
       }
     }
   ],
-  "graph": [
-    { "from": "the-space-age", "to": "slow-start" },
-    { "from": "the-space-age", "to": "fast-start" },
-    { "from": "fast-start", "to": "regroup" },
-    { "from": "slow-start", "to": "regroup" }
-  ],
+  "graph": {
+    "the-space-age": ["slow-start", "fast-start"],
+    "slow-start": ["regroup"],
+    "fast-start": ["regroup"]
+  },
   "setup": {
     "floating-hulk": "fast-start",
     "player": "the-space-age",

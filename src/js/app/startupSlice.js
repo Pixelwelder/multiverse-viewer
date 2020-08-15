@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { actions as logActions, createLog } from "../features/log/logSlice";
-import { actions as multiverseActions } from "../features/multiverse/multiverseSlice";
+import { actions as multiverseActions } from "../features/multiverse/multiverseSlice2";
 
 const initialState = {
   isInitialized: false,

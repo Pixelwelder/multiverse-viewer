@@ -11,12 +11,13 @@ import ObjectViewer from "./ObjectViewer";
 
 const Multiverse = () => {
   const { selectedNode } = useSelector(uiSelectors.select);
+  const meta = useSelector(multiverseSelectors.selectMeta);
   const player = useSelector(multiverseSelectors.selectPlayer);
   const dispatch = useDispatch();
 
   return (
     <div className="page multiverse">
-      <h2>Viewer</h2>
+      <h2>{ meta.name }</h2>
       <Graph />
       <div>
         <ChildrenViewer title="Inventory" object={player} />
