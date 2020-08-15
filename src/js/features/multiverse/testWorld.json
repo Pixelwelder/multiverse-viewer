@@ -57,10 +57,9 @@
     "slow-start": ["regroup"],
     "fast-start": ["regroup"]
   },
-  "setup": {
-    "floating-hulk": "fast-start",
-    "player": "the-space-age",
-    "cloak-of-office": "the-space-age"
+  "hierarchy": {
+    "the-space-age": ["cloak-of-office", "player"],
+    "fast-start": ["floating-hulk"]
   },
   "aliases": {
     "the-space-age": ["start"],

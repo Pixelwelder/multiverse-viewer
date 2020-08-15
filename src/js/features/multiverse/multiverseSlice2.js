@@ -13,7 +13,7 @@ const initialState = {
   },
   objects: {},
   graph: {}, // arrays of destination names keyed by the name of their starts
-  setup: {}  // locations keyed by item name
+  hierarchy: {}
 };
 
 const init = createAsyncThunk(
@@ -21,7 +21,7 @@ const init = createAsyncThunk(
   async (_, { dispatch }) => {
     try {
       dispatch(logActions.log(createLog('Parsing world from JSON...')));
-      let { meta, objects, graph, setup } = json;
+      let { meta, objects, graph, hierarchy } = json;
 
       dispatch(logActions.log(createLog(`Creating ${objects.length} objects...`)));
       objects = objects.reduce((accum, { type, overrides }) => {
@@ -34,7 +34,7 @@ const init = createAsyncThunk(
       dispatch(logActions.log(createLog(`Created objects.`)));
 
       dispatch(logActions.log(createLog('Successfully parsed world.')));
-      return { meta, objects, graph, setup };
+      return { meta, objects, graph, hierarchy };
     } catch (error) {
       dispatch(logActions.log(createLog(error, ERROR)));
       throw error;
@@ -48,11 +48,11 @@ const slice = createSlice({
   reducers: {},
   extraReducers: {
     [init.fulfilled]: (state, action) => {
-      const { meta, objects, graph, setup } = action.payload;
+      const { meta, objects, graph, hierarchy } = action.payload;
       state.meta = meta;
       state.objects = objects;
       state.graph = graph;
-      state.setup = setup;
+      state.hierarchy = hierarchy;
     }
   }
 });

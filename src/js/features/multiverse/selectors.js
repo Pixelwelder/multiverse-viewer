@@ -10,6 +10,14 @@ const selectSelectedObject = createSelector(
     return objects[selectedNode];
   }
 );
+const selectSelectedObjectChildren = createSelector(
+  multiverseSelectors.select,
+  uiSelectors.select,
+  ({ objects, hierarchy }, { selectedNode }) => {
+    const names = hierarchy[selectedNode] || [];
+    return names.map(name => objects[name]);
+  }
+)
 
-const selectors = { selectSelectedObject };
+const selectors = { selectSelectedObject, selectSelectedObjectChildren };
 export { selectors };

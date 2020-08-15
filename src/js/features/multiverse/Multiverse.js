@@ -15,18 +15,17 @@ const Multiverse = () => {
   const meta = useSelector(multiverseSelectors.selectMeta);
   const player = useSelector(multiverseSelectors.selectPlayer);
   const selectedObject = useSelector(selectors.selectSelectedObject);
+  const selectedObjectChildren = useSelector(selectors.selectSelectedObjectChildren);
   const dispatch = useDispatch();
-
-  console.log(selectedObject);
 
   return (
     <div className="page multiverse">
       <h2>{ meta.name }</h2>
       <Graph />
       <div>
-        <ChildrenViewer title="Inventory" object={player} />
+        <ChildrenViewer title="Inventory" objects={[]} />
         <ChildrenViewer
-          object={selectedObject}
+          objects={selectedObjectChildren}
           onAction={name => {
             dispatch(multiverseActions.reparent({ objectName: name, toParentName: 'player' }));
           }}
