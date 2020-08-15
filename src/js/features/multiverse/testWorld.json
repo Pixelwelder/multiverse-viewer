@@ -14,7 +14,7 @@
       "type": "room",
       "overrides": {
         "displayName": "The Space Age",
-        "description": "It’s been a tough century. First you had the plagues, then you had the riots, then you had that one guy \nwho swore he could summon the spirits of our ancestors—and we all know how that turned out. \nBut now, two billion deaths later, we have peace. Good job, [player]! Those of us who survived knew you could do it!"
+        "description": "*It’s been a tough century*. First you had the plagues, then you had the riots, then you had that one guy who swore he could summon the spirits of our ancestors—and we all know how that turned out. \nBut now, two billion deaths later, we have peace. Good job, [player]! Those of us who survived knew you could do it!"
       }
     },
     {

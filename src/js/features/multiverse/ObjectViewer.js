@@ -1,5 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import ReactMarkdown from "react-markdown";
+
 import { ROOM } from '../../multiverse/constants';
 
 const ObjectViewer = ({ object, onAction }) => {
@@ -9,7 +11,8 @@ const ObjectViewer = ({ object, onAction }) => {
       {object && (
         <>
           <p>{object.displayName}</p>
-          <p>{object.description}</p>
+          <ReactMarkdown source={object.description} />
+          {/*<p>{object.description}</p>*/}
 
           {onAction && (object._type === ROOM) && (
             <Button
