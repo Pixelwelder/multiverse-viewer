@@ -1,5 +1,5 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
-import multiverseReducer from '../features/multiverse/multiverseSlice';
+import multiverseReducer from '../features/multiverse/multiverseSlice2';
 import logReducer from '../features/log/logSlice';
 import startupReducer from './startupSlice';
 import uiReducer from '../features/multiverse/uiSlice';

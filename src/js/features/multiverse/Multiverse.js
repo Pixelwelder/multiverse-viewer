@@ -5,7 +5,7 @@ import './style.scss';
 import Graph from "./Graph";
 import ChildrenViewer from "./ChildrenViewer";
 import { selectors as uiSelectors } from "./uiSlice";
-import { selectors as multiverseSelectors, actions as multiverseActions } from "./multiverseSlice";
+import { selectors as multiverseSelectors, actions as multiverseActions } from "./multiverseSlice2";
 import { useDispatch, useSelector } from "react-redux";
 import ObjectViewer from "./ObjectViewer";
 

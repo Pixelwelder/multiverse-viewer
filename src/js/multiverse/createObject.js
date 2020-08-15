@@ -30,11 +30,9 @@ const createObject = (type, overrides) => {
   const object = { ...defaultObj, ...overrides, _type: type };
 
   object._name = displayNameToName(object.displayName);
+  object.toString = () => object._name;
 
-  return {
-    ...object,
-    toString: () => object._name
-  };
+  return object;
 };
 
 module.exports = createObject;

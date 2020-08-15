@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import ReactGraph from 'react-graph-vis';
 
-import { selectors as multiverseSelectors } from "./multiverseSlice";
+import { selectors as multiverseSelectors } from "./multiverseSlice2";
 import { actions as uiActions } from "./uiSlice";
 
 const Graph = () => {

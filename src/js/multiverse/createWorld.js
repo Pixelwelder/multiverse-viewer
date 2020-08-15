@@ -8,11 +8,6 @@ const createWorld = (meta) => {
   const getAll = () => ({ ...all });
 
   const aliasMap = {};
-  const parentNamesByObjectNames = {};
-  const getParent = (object) => {
-    const parentName = parentNamesByObjectNames[object];
-    return hasObject(parentName) ? getObject(parentName) : null;
-  };
 
   // The graph.
   const nodes = {};
@@ -29,8 +24,13 @@ const createWorld = (meta) => {
   };
 
   const hasObject = (object) => {
-    console.log(`checking for object ${object}`);
     return !!(all[object] || all[aliasMap[object]]);
+  };
+
+  const parentNamesByObjectNames = {};
+  const getParent = (object) => {
+    const parentName = parentNamesByObjectNames[object];
+    return hasObject(parentName) ? getObject(parentName) : null;
   };
 
   const addItem = (item, parentName, { aliases = [] } = {}) => {
@@ -54,6 +54,7 @@ const createWorld = (meta) => {
     });
 
     console.log(`Added ${item} to ${parentName}.`);
+    dispatch('change');
   };
 
   // Single direction.
@@ -70,6 +71,7 @@ const createWorld = (meta) => {
     fromRoom.linkedRooms[toRoom] = true;
 
     console.log(`Linked ${fromRoom} to ${toRoom}.`);
+    dispatch('change');
   };
 
   const move = (objectName, toRoomName) => {
@@ -82,10 +84,13 @@ const createWorld = (meta) => {
     if (toRoom.children[object]) throw new Error(`${object} is already in ${toRoom}.`);
     if (!fromRoom.linkedRooms[toRoom]) throw new Error(`${toRoom} is not accessible from ${fromRoom}.`);
 
+    console.log('???', JSON.stringify(fromRoom.children));
     delete fromRoom.children[object];
+    console.log('???', JSON.stringify(fromRoom.children));
     toRoom.children[object] = object;
 
     console.log(`${object} moved from ${fromRoom} to ${toRoom}.`)
+    dispatch('change');
   };
 
   const reparent = (itemName, toParentName) => {
@@ -96,12 +101,22 @@ const createWorld = (meta) => {
     if (!fromParent.children[item]) throw new Error(`${item} is not in ${fromParent}.`);
     if (toParent.children[item]) throw new Error(`${item} is already in ${toParent}.`);
 
-    delete fromParent.children[item];
-    toParent.children[item] = true;
+    const { [item]: moved, ...newChildren } = fromParent.children;
+    console.log('newChildren', newChildren);
+    fromParent.children = newChildren;
+    fromParent.what = 'the heck';
 
+
+    toParent.children[item] = true;
     parentNamesByObjectNames[item] = toParent.toString();
 
+    console.log('???', toParent);
+
+    delete toParent.children[item];
+    console.log('???', toParent);
+
     console.log(`Moved ${item} from ${fromParent} to ${toParent}.`);
+    dispatch('change');
   };
 
   const describe = (objectName) => {
@@ -117,8 +132,21 @@ const createWorld = (meta) => {
     console.log(description);
   };
 
+  // TODO At the moment it's forever.
+  const subscribers = {};
+  const subscribe = (name, func) => {
+    if (!subscribers[name]) subscribers[name] = [];
+    subscribers[name].push(func);
+  };
+
+  const dispatch = (name, payload) => {
+    const _subscribers = subscribers[name] || [];
+    _subscribers.forEach(listener => listener(payload));
+  }
+
   return {
-    linkRoom, addItem, move, reparent, describe, getMeta, getNodes, getEdges, getObject, hasObject, getAll, getParent
+    linkRoom, addItem, move, reparent, describe, getMeta, getNodes, getEdges, getObject, hasObject, getAll, getParent,
+    subscribe, dispatch
   };
 };
 

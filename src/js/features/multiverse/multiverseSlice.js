@@ -14,6 +14,10 @@ const init = createAsyncThunk(
   async (_, { dispatch }) => {
     dispatch(logActions.log(createLog('Creating world...')));
     const world = parse(worldJSON);
+    world.subscribe('change', () => {
+      dispatch(logActions.log(createLog('World changed.')));
+
+    });
     return world;
   }
 );
@@ -34,10 +38,15 @@ const move = createAsyncThunk(
 
 const reparent = createAsyncThunk(
   'reparent',
-  async ({ objectName, toParentName }, { getState }) => {
-    const state = getState();
-    const { world } = select(state);
-    world.reparent(objectName, toParentName);
+  async ({ objectName, toParentName }, { dispatch, getState }) => {
+    try {
+      const state = getState();
+      const { world } = select(state);
+      world.reparent(objectName, toParentName);
+    } catch (error) {
+      dispatch(logActions.log(createLog(error, ERROR)));
+      throw error;
+    }
   }
 );
 
