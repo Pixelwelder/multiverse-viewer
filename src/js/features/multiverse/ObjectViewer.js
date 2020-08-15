@@ -13,7 +13,7 @@ const ObjectViewer = ({ object, onAction }) => {
 
           {object._type === ROOM && (
             <Button
-              onClick={onAction}
+              onClick={() => onAction(object)}
             >
               Go Here
             </Button>

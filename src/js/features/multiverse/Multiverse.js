@@ -11,9 +11,10 @@ import { useDispatch, useSelector } from "react-redux";
 import ObjectViewer from "./ObjectViewer";
 
 const Multiverse = () => {
-  const { selectedNode } = useSelector(uiSelectors.select);
+  // const { selectedNode } = useSelector(uiSelectors.select);
   const meta = useSelector(multiverseSelectors.selectMeta);
   const inventory = useSelector(multiverseSelectors.selectPlayerChildren);
+  const selectedObject = useSelector(selectors.selectSelectedObject);
   const selectedObjectChildren = useSelector(selectors.selectSelectedObjectChildren);
   const dispatch = useDispatch();
 
@@ -30,12 +31,9 @@ const Multiverse = () => {
           }}
         />
         <ObjectViewer
-          object={selectedNode}
-          onAction={() => {
-            dispatch(multiverseActions.move({
-              objectName: 'player',
-              toRoomName: selectedNode.toString()
-            }));
+          object={selectedObject}
+          onAction={object => {
+            dispatch(multiverseActions.reparent({ newParentName: object.toString() }));
           }}
         />
       </div>

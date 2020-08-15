@@ -54,19 +54,32 @@ const init = createAsyncThunk(
 
 const reparent = createAsyncThunk(
   'reparent',
-  async ({ object, newParentName }, { dispatch, getState }) => {
+  async ({ object: _object, newParentName }, { dispatch, getState }) => {
     try {
-      const { hierarchy, invertedHierarchy } = select(getState());
+      const state = getState();
+      const { hierarchy, invertedHierarchy } = select(state);
+      const object = _object || selectPlayer(state);
       const oldParentName = invertedHierarchy[object];
       const oldParentChildren = hierarchy[oldParentName] || [];
       const newParentChildren = hierarchy[newParentName] || [];
-      const oldParentFilteredChildren = oldParentChildren.filter(name => name !== object.toString());
 
       return {
         object, oldParentName, newParentName,
         oldParentChildren: oldParentChildren.filter(name => name !== object.toString()),
         newParentChildren: [...newParentChildren, object.toString()]
       };
+
+    } catch (error) {
+      dispatch(logActions.log(createLog(error, ERROR)));
+      throw error;
+    }
+  }
+);
+
+const move = createAsyncThunk(
+  'move',
+  async (_, { dispatch }) => {
+    try {
 
     } catch (error) {
       dispatch(logActions.log(createLog(error, ERROR)));
@@ -90,15 +103,17 @@ const slice = createSlice({
     },
     [reparent.fulfilled]: (state, action) => {
       const { object, oldParentName, newParentName, oldParentChildren, newParentChildren } = action.payload;
-
       state.hierarchy[oldParentName] = oldParentChildren;
       state.hierarchy[newParentName] = newParentChildren
       state.invertedHierarchy[object] = newParentName;
+    },
+    [move.fulfilled]: (state, action) => {
+
     }
   }
 });
 
-const actions = { ...slice.actions, init, reparent };
+const actions = { ...slice.actions, init, reparent, move };
 
 const select = ({ multiverse }) => multiverse;
 const selectMeta = createSelector(select, ({ meta }) => meta);
