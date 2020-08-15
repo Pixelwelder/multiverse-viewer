@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import ReactMarkdown from "react-markdown";
 
 import { ROOM } from '../../multiverse/constants';
 
